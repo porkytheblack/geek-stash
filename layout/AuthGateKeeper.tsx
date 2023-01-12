@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Center, Flex, Loader, Text } from '@mantine/core'
+import { isNull, isUndefined } from 'lodash'
 import React, { useEffect } from 'react'
+import { useAuthState } from '../hooks/auth/useAuthState'
 import { useLayout } from '../hooks/layout/useLayout'
 import { IPageProps } from '../types/next-related-extensions'
 
@@ -9,18 +11,33 @@ import { IPageProps } from '../types/next-related-extensions'
  * has access to the page or not
  */
 
-function AuthGateKeeper( { accessLevel } : Partial<IPageProps> ) {
+function AuthGateKeeper( { accessLevel, onProceed } : Partial<IPageProps> & {
+    onProceed: (status: string) => void
+} ) {
     const { set_page_access_state } = useLayout()
+    const {user, profile, profileLoading} = useAuthState()
 
     useEffect(()=>{
-        const timer_ref = setTimeout(()=>{
-            set_page_access_state("authorized")
-        }, 3000)
-
-        return ()=>{
-            clearTimeout(timer_ref)
+        if(isNull(profileLoading) || profileLoading == true) return;
+        console.log("AuthGate user ::", user)
+        if(profile){
+            if( accessLevel === "public" || isUndefined(accessLevel)) {
+                onProceed("authorized")
+            }else if(accessLevel === "admin" && profile.access === "admin") {
+                onProceed("authorized")
+            }else if(accessLevel === "private" && ["admin", "user", "creator"].includes(profile.access)){
+                onProceed("authorized")
+            }else{
+                onProceed("unauthorized")
+            }
+        }else{
+            if( accessLevel === "public" || isUndefined(accessLevel)) {
+                onProceed("authorized")
+            }else {
+                onProceed("unauthorized")
+            }
         }
-    }, [])
+    }, [profileLoading])
     
   return (
        <Flex

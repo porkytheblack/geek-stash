@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import DashboardHeader from '../components/organisms/header/DashboardHeader';
 import DashboardNavbar from '../components/organisms/navbar/DashboardNavbar';
+import { useAuthState } from '../hooks/auth/useAuthState';
 import { useLayout } from '../hooks/layout/useLayout';
 import { IPageProps } from '../types/next-related-extensions';
 import AuthGateKeeper from './AuthGateKeeper';
@@ -18,19 +19,49 @@ function Layout(props: IProps) {
 
 const { children, pageProps: { layout, accessLevel } } = props;
 const { current_page_access_state, current_layout,  set_layout }  = useLayout()
-const { push } = useRouter()
+const { push, events } = useRouter()
 const [loading, setLoading] = useState<boolean>(true)
 
+const { user, profile } = useAuthState()
+
 useEffect(()=>{
-    if(isEmpty(current_page_access_state)) return;
-    console.log("current_page_access_state::", current_page_access_state)
-    switch (current_page_access_state) {
+    console.log(user)
+    console.log(profile)
+    if(isEmpty(user)){
+        setLoading(true)
+        push("/").then(()=>{
+            setLoading(false)
+        })
+    }
+}, [user, profile])
+
+
+useEffect(()=>{
+    events.on("routeChangeStart", (path)=>{
+        setLoading(true)
+        
+    })
+    return ()=>{
+        events.off("routeChangeStart", (path)=>{
+            console.log("Path unmounted: :", path)
+            setLoading(true)
+        })
+    }
+}, [])
+
+
+
+const onProceed = ( access_state: string ) => {
+    if(isEmpty(access_state)) return;
+
+    switch (access_state) {
         case "authorized": 
             setLoading(false)
             set_layout((accessLevel === "public" || isUndefined(accessLevel)) ? "main" : "dashboard")
             break;
         case "unauthorized":
             set_layout("main")
+            console.log("unauthorized")
             push("/").then(()=>{
                 setLoading(false)
             })
@@ -38,33 +69,26 @@ useEffect(()=>{
         case "loading":
             setLoading(true)
         default:
-            console.log("default::", current_page_access_state)
             break;
     }
-}, [current_page_access_state])
+}
+
 
   return (
     loading ? <AuthGateKeeper
+        onProceed={onProceed}
         accessLevel={accessLevel}
-    /> :<AppShell
-        navbar={
-            (current_layout === "main") ? undefined : 
-            <DashboardNavbar/>
-        }
-        header={
-            current_layout === "main" ? undefined : 
-            <DashboardHeader/>
-        }
+    /> :  current_layout === "main" ? <AppShell
         styles={(theme)=>({
             main: {
                 backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-                padding: current_layout === "main" ? 0 : theme.spacing.xs,
+                padding: 0
             },
             body: {
-                padding: current_layout === "main" ? 0 : theme.spacing.xs,
+                padding: 0
             },
             root: {
-                padding: current_layout === "main" ? 0 : theme.spacing.xs,
+                padding: 0
             }
         })}
 
@@ -72,6 +96,24 @@ useEffect(()=>{
         {
             children
         }
+        
+    </AppShell> : <AppShell
+        fixed
+        header={<DashboardHeader />}
+        navbar={<DashboardNavbar />}
+        styles={(theme)=>({
+            main: {
+                backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+            }
+        })}
+
+
+
+    >
+        {
+            children
+        }
+        
     </AppShell>
   )
 }

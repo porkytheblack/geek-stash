@@ -1,12 +1,22 @@
 import { Avatar, Flex, Header } from '@mantine/core'
 import React from 'react'
+import { useAuth } from '../../../hooks/auth/useAuth'
+import { useAuthState } from '../../../hooks/auth/useAuthState'
+import Logo from '../../atoms/brand/Logo/Logo'
 
 function DashboardHeader() {
+  const { profile } = useAuthState()
+  const { signOut } = useAuth()
   return (
     <Header height={60}  >
-        <Flex align="center" h="100%" justify="flex-end" px="md" py="lg" >
+        <Flex align="center" h="100%" justify="space-between" px="md" py="lg" >
+            <Logo/>
             <Avatar
-                src={"https://images-ext-2.discordapp.net/external/6wEv2nYOkVxaWjWZBn1vaI4-UMH2fCww8x4XfW4H2iQ/%3Fauto%3Dcompress%26cs%3Dtinysrgb%26w%3D1260%26h%3D750%26dpr%3D1/https/images.pexels.com/photos/774909/pexels-photo-774909.jpeg"}
+                sx={{
+                  cursor: "pointer"
+                }}
+                onClick={signOut}
+                src={profile?.pic_url}
                 alt="user"
                 radius={"xl"}
             />

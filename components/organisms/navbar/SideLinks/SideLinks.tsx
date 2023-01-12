@@ -10,28 +10,32 @@ function SideLinks() {
                 size={16}
             />,
             color:"blue",
-            label: "API Keys"
+            label: "API Keys",
+            link: "/dashboard"
         },
         {
             icon: <IconPlus
                 size={16}
             />,
             color: "blue",
-            label: "Create"
+            label: "Create",
+            link: "/dashboard/create"
         },
         {
             icon: <IconEye
                 size={16}
             />,
             color: "blue",
-            label: "View"
+            label: "View",
+            link: "/dashboard/view"
         },
         {
             icon: <IconChartBar
                 size={16}
             />,
             color: "blue",
-            label: "Usage"
+            label: "Usage",
+            link: "/dashboard/usage"
         }
     ]
 

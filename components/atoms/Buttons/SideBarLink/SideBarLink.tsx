@@ -1,10 +1,12 @@
 import { Group, MantineTheme, Sx, Text, ThemeIcon, UnstyledButton } from '@mantine/core'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 interface IProps {
     icon: React.ReactNode,
     label: string,
     color: string,
+    link?: string
 } 
 
 export type ISidebarLink = IProps
@@ -21,10 +23,16 @@ const makeStyles: Sx = (theme: MantineTheme) => ({
 })
 
 function SideBarLink(props: IProps) {
-    const { color, label, icon } = props;
+    const { color, label, icon, link } = props;
+    const { push } = useRouter()
   return (
     <UnstyledButton
         sx={makeStyles}
+        onClick={()=>{
+            if(link){
+                push(link)
+            }
+        }}
     >
         <Group>
             <ThemeIcon color={color} >

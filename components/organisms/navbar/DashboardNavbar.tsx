@@ -13,12 +13,13 @@ function DashboardNavbar() {
         }}
     >
         <Navbar.Section>
-            <Center>
-                <Logo/>
-            </Center>
+            
         </Navbar.Section>
         <Navbar.Section grow mt="md" >
             <SideLinks/>
+        </Navbar.Section>
+        <Navbar.Section>
+            
         </Navbar.Section>
     </Navbar>
   )
