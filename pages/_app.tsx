@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { MantineProvider } from '@mantine/core'
+import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { rtlCache } from '../utils/rtl-cache'
 import { theme } from '../utils/theme'
 import { Provider } from 'react-redux'
@@ -28,13 +28,18 @@ export default function App({ Component, pageProps }: AppProps<IPageProps & {
         theme={theme}
         emotionCache={rtlCache}
       >
-        <Provider
-          store={store}
+        <ColorSchemeProvider
+          colorScheme={"dark"}
+          toggleColorScheme={(c)=>{}}
         >
-          <Layout pageProps={pageProps} >
-            <Component {...pageProps} />
-          </Layout>
-        </Provider>
+          <Provider
+            store={store}
+          >
+            <Layout pageProps={pageProps} >
+              <Component {...pageProps} />
+            </Layout>
+          </Provider>
+        </ColorSchemeProvider>
       </MantineProvider>
     </SessionContextProvider>
   )

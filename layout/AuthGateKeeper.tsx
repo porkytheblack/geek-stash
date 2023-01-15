@@ -18,6 +18,7 @@ function AuthGateKeeper( { accessLevel, onProceed } : Partial<IPageProps> & {
     const {user, profile, profileLoading} = useAuthState()
 
     useEffect(()=>{
+        console.log("Profile loading::", profileLoading)
         if(isNull(profileLoading) || profileLoading == true) return;
         console.log("AuthGate user ::", user)
         if(profile){
@@ -37,7 +38,7 @@ function AuthGateKeeper( { accessLevel, onProceed } : Partial<IPageProps> & {
                 onProceed("unauthorized")
             }
         }
-    }, [profileLoading])
+    }, [,profileLoading])
     
   return (
        <Flex

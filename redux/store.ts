@@ -1,3 +1,4 @@
+import { franchiseApi } from './data/franchiseApi';
 import { TypedUseSelectorHook } from './../node_modules/react-redux/es/types.d';
 import { configureStore, Dispatch } from "@reduxjs/toolkit"
 import combinedReducers, { RootState } from "./rootReducer"
@@ -6,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux"
 
 const store = configureStore({
     reducer: combinedReducers,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+    .concat(franchiseApi.middleware)
 })
 
 export default store

@@ -1,4 +1,4 @@
-import { Avatar, Flex, Header } from '@mantine/core'
+import { Avatar, Flex, Header, Tooltip } from '@mantine/core'
 import React from 'react'
 import { useAuth } from '../../../hooks/auth/useAuth'
 import { useAuthState } from '../../../hooks/auth/useAuthState'
@@ -11,6 +11,11 @@ function DashboardHeader() {
     <Header height={60}  >
         <Flex align="center" h="100%" justify="space-between" px="md" py="lg" >
             <Logo/>
+            <Tooltip
+              label="Click me to sign out"
+              position="bottom"
+              withArrow
+            >
             <Avatar
                 sx={{
                   cursor: "pointer"
@@ -20,6 +25,7 @@ function DashboardHeader() {
                 alt="user"
                 radius={"xl"}
             />
+            </Tooltip>
         </Flex>
     </Header>
   )

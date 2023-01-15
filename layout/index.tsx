@@ -19,21 +19,12 @@ function Layout(props: IProps) {
 
 const { children, pageProps: { layout, accessLevel } } = props;
 const { current_page_access_state, current_layout,  set_layout }  = useLayout()
-const { push, events } = useRouter()
+const { push, events, pathname } = useRouter()
 const [loading, setLoading] = useState<boolean>(true)
 
 const { user, profile } = useAuthState()
 
-useEffect(()=>{
-    console.log(user)
-    console.log(profile)
-    if(isEmpty(user)){
-        setLoading(true)
-        push("/").then(()=>{
-            setLoading(false)
-        })
-    }
-}, [user, profile])
+
 
 
 useEffect(()=>{
@@ -52,6 +43,7 @@ useEffect(()=>{
 
 
 const onProceed = ( access_state: string ) => {
+    console.log("Proceeding  path::", pathname)
     if(isEmpty(access_state)) return;
 
     switch (access_state) {

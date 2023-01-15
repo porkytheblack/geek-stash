@@ -28,6 +28,8 @@ export function useAuthState () {
                     setProfile(data?.[0])
                 }
             })
+        }else{
+            setProfileLoading(false)
         }
     }, [,user])
 
