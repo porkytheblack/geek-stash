@@ -3,11 +3,17 @@ import { useEntityDescriptionForm } from '../../../../hooks/form/useEntityDescri
 import NormalPhase from './NormalPhase'
 import SetupForm from './SetupForm/SetupForm'
 
-function DynamicForm() {
+interface IProps {
+  onDone?: () => void
+}
+
+function DynamicForm(props: IProps) {
   const { currentPhaseIndex } = useEntityDescriptionForm()
   return (
     [-1,0]?.includes(currentPhaseIndex) ? <SetupForm/> :
-    <NormalPhase/>
+    <NormalPhase
+      onDone={props.onDone}
+    />
   )
 }
 

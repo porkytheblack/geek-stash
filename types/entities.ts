@@ -17,7 +17,8 @@ export interface franchise {
     description: string,
     creator: Partial<eIProfile>,
     created_on: string,
-    status: item_status
+    status: item_status,
+    updated_on: string
 }
 
 export interface eICharacter {

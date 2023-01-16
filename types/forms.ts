@@ -1,9 +1,10 @@
 export type tFormType = "character" | "fight" | "place" | "franchise" | "gadget" | "species";
+export type tFormQueryType = "image" | "text" | "description" | "list" | "time" | "number" | "boolean" | "select" | "multi-select" | "options" | "color";
 
 export interface IQueryInterface<T> {
     field: keyof Partial<T>,
     value: string | null,
-    type: "image" | "text" | "description" | "list" | "time" | "number" | "boolean" | "select" | "multi-select" | "options" | "color",
+    type: tFormQueryType,
     label: string,
     required: boolean,
     query?: string,

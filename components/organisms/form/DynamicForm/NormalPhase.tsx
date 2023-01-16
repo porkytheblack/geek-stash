@@ -11,7 +11,7 @@ import { parse_query } from '../../../../utils/dynamic-forms/form-utils'
 import PhaseQuery from './PhaseQuery'
 
 interface IProps {
-
+  onDone?: () => void
 }
 
 interface IReducerState {
@@ -36,11 +36,13 @@ const { setQueries } = reducerSlice.actions
 
 export const { reducer } = reducerSlice
 
-function NormalPhase() {
+function NormalPhase(props: IProps) {
   const [empty_q, set_empty_q] = useState<Array<string>>()
   const [{queries}, dispatch] = useReducer(reducer, initialState)
   const [error, setError] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(false)
+
+  const { onDone } = props
 
   const {load_current_form_queries_with_init_data : load_queries, updateResult,previous:  _previous, currentFormSchema, results, chosen_franchise, currentFormType, resetSchema} = useEntityDescriptionForm()
 
@@ -82,6 +84,7 @@ function NormalPhase() {
           console.log(data)
           setLoading(false)
           setError(null)
+          onDone && onDone()
           /**
            * @todo: add logic to handle the response
            */

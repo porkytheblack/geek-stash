@@ -47,12 +47,12 @@ const entityDescriptionForm = createSlice({
             state.current_form_schema = action.payload.current_form_schema
         },
         resetState: (state, action) => {
-            state.type = action.payload.back_one ? state.type : ""
+            state.type = action.payload?.back_one ? state.type : ""
             state.query_flow = null
             state.query_results = null
             state.current_form_schema = null
-            state.current_phase_index = action.payload.back_one ? 0 : -1
-            state.chosen_franchise =  action.payload.back_one ? state.chosen_franchise :''
+            state.current_phase_index = action.payload?.back_one ? 0 : -1
+            state.chosen_franchise =  action.payload?.back_one ? state.chosen_franchise :''
         },
         updateField: (state, action) => {
             state.query_results = state.query_results ? {

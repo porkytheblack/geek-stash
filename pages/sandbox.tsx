@@ -1,9 +1,12 @@
 import React from 'react'
 import DynamicForm from '../components/organisms/form/DynamicForm/DynamicForm'
+import DynamicTable from '../components/organisms/Table/DynamicTable/DynamicTable'
 
 function Sandbox() {
   return (
-    <DynamicForm/>
+    <DynamicTable
+        schema="creatorFightsTableSchema"
+    />
   )
 }
 

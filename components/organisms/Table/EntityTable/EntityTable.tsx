@@ -1,20 +1,23 @@
-import { Flex, Grid, Loader, Notification, Table, Text } from '@mantine/core'
+import { Badge, Flex, Grid, Image, Loader, Notification, Table, Text } from '@mantine/core'
 import { IconX } from '@tabler/icons'
 import { isEmpty } from 'lodash'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { IColumn, tTableColumnType } from '../../../../types/tables'
+
+import dayjs from "dayjs"
+import { truncate_string } from '../../../../utils/general-util-functions'
+import { useTable } from '../../../../hooks/table/useTable'
 
 interface IProps {
     loading: boolean,
     error: any,
     data: any[],
-    columns: {
-        key: string,
-        label: string,
-    }[],
-    title: string
+    columns: Array<Partial<IColumn<any>>>,
+    title: string,
+    onRowClick?: (id: any) => void
 }
 
-function EntityTableHead ({headers}:{headers: string[]}) {
+function EntityTableHead ({headers}:{headers: (string | undefined)[]}) {
     return (
         <thead>
             <tr>
@@ -34,22 +37,79 @@ function EntityTableHead ({headers}:{headers: string[]}) {
 
 function EntityTableRows ({
     keys,
-    data
+    data,
+    types,
+    onRowClick
 }: { 
-    keys: string[],
-    data: any[]
+    keys: (string|undefined)[],
+    data: any[],
+    types: tTableColumnType [],
+    onRowClick?: (id: any) => void
 }) {
+
     return (
         <tbody>
             {
                 data?.map((item, index)=>(
-                    <tr key={index} >
+                    <tr key={index}
+                        onClick={()=>onRowClick?.(item?.id)}
+                    >
                         {
                             keys?.map((key, index)=>(
                                 <td key={index} >
-                                    {
-                                        item?.[key]
-                                    }
+                                        {
+                                            key ? (
+                                            <>
+                                                {
+                                                    types?.[index] === "image" && <Image
+                                                        src={item?.[key]}
+                                                        alt={item?.[key]}
+                                                        width={50}
+                                                        height={50}
+                                                        
+                                                    />
+                                                }
+                                                {
+                                                    types?.[index] === "text" && truncate_string(item?.[key], 20)
+                                                }
+                                                {
+                                                    types?.[index] === "date" && dayjs(item?.[key]).format("DD/MM/YYYY")
+                                                }
+                                                {
+                                                    types?.[index] === "description" && truncate_string(item?.[key], 20)
+                                                }
+                                                {
+                                                    types?.[index] === "color" && <Flex
+                                                        style={{
+                                                            backgroundColor: item?.[key],
+                                                            width: 50,
+                                                            height: 50,
+                                                            borderRadius: 50
+                                                        }}
+                                                    />
+                                                }
+                                                {
+                                                    types?.[index] === 'badge' && <Badge>
+                                                        {item?.[key]}
+                                                    </Badge>
+                                                }
+                                                {
+                                                    types?.[index] === 'badges' && <Flex align="center" justify={"center"} >
+                                                        {
+                                                            item?.[key]?.split(",")?.map((badge: string, index: number)=>(
+                                                                <Badge
+                                                                    key={index}
+                                                                >
+                                                                    {badge}
+                                                                </Badge>
+                                                            ))
+                                                        }
+                                                    </Flex>
+                                                }
+                                            </>
+                                            )
+                                            : ""
+                                        }
                                 </td>
                             ))
                         }
@@ -61,7 +121,7 @@ function EntityTableRows ({
 }
 
 function EntityTable(props: IProps) {
-    const { loading, error, data, columns, title } = props;
+    const { loading, error, data, columns, title, onRowClick } = props;
 
     
 
@@ -99,7 +159,12 @@ function EntityTable(props: IProps) {
                 highlightOnHover
             >
                 <EntityTableHead headers={columns?.map((column)=>column?.label)} />
-                <EntityTableRows keys={columns?.map((column)=>column?.key)} data={data} />
+                <EntityTableRows 
+                    types={columns?.map((column)=>column.type) as any} 
+                    keys={columns?.map((column)=>column?.key) as any} 
+                    data={data} 
+                    onRowClick={onRowClick}
+                />
             </Table>
             }
         </Grid.Col>
