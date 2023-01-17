@@ -79,7 +79,7 @@ function NormalPhase(props: IProps) {
         ...results,
         franchise: chosen_franchise
       }
-      let cleaned = currentFormState === "update" ? omit(data, ['created_on', 'updated_on', 'created_by']) : currentFormSchema?.on_submit
+      let cleaned = currentFormState === "update" ? omit(data, ['created_on', 'updated_on', 'created_by']) : data
       fn && supabase.rpc(fn, cleaned).then(({data, error})=> {
         if(error){
           setError(error)
