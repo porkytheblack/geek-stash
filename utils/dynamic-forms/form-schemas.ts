@@ -4,7 +4,7 @@ import { IDynamicForm } from './../../types/forms';
 
 
 export const characterForm: IDynamicForm<eICharacter> = {
-    entity: "character",
+    entity: "characters",
     queries: [
         {
             field: "name",
@@ -93,11 +93,12 @@ export const characterForm: IDynamicForm<eICharacter> = {
         }
 
     ],
-    on_submit: "type:rpc=add_character"
+    on_submit: "type:rpc=add_character",
+    on_update: "type:rpc=update_creator_character"
 }
 
 export const gadgetForm: IDynamicForm<eIGadget> = {
-    entity: "gadget",
+    entity: "gadgets",
     queries: [
         {
             field: "name",
@@ -173,11 +174,12 @@ export const gadgetForm: IDynamicForm<eIGadget> = {
             placeholder: "Select a color that suits the gadget",
         }
     ],
-    on_submit: "type:rpc=add_gadget"
+    on_submit: "type:rpc=add_gadget",
+    on_update: "type:rpc=update_creator_gadget"
 }
 
 export const placeForm: IDynamicForm<eIPlace> = {
-    entity: "place",
+    entity: "places",
     queries: [
         {
             field: "name",
@@ -213,7 +215,8 @@ export const placeForm: IDynamicForm<eIPlace> = {
             placeholder: "Upload an image for the place",
         }
     ],
-    on_submit: "type:rpc=add_place"
+    on_submit: "type:rpc=add_place",
+    on_update: "type:rpc=update_creator_place"
 }
 
 export const speciesForm: IDynamicForm<eISpecies> = {
@@ -270,7 +273,8 @@ export const speciesForm: IDynamicForm<eISpecies> = {
             options: []
         }
     ],
-    on_submit: "type:rpc=add_species"
+    on_submit: "type:rpc=add_species",
+    on_update: "type:rpc=update_creator_species"
 }
 
 export const franchiseForm: IDynamicForm<franchise> = {
@@ -317,11 +321,12 @@ export const franchiseForm: IDynamicForm<franchise> = {
             required: true,
         }
     ],
-    on_submit: "type:rpc=add_franchise"
+    on_submit: "type:rpc=add_franchise",
+    on_update: "type:rpc=update_creator_franchise"
 }
 
 export const fightForm: IDynamicForm<eIFights> = {
-    entity: "fight",
+    entity: "fights",
     queries: [
         {
             field: "name",
@@ -359,7 +364,8 @@ export const fightForm: IDynamicForm<eIFights> = {
         },
 
     ],
-    on_submit: "type:rpc=add_fight"
+    on_submit: "type:rpc=add_fight",
+    on_update: "type:rpc=update_creator_fight"
 }
 
 

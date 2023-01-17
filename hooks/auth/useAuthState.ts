@@ -13,24 +13,33 @@ export function useAuthState () {
     const [profile, setProfile] = useState<eIProfile | null>(null)
     const [profileLoading, setProfileLoading] = useState<boolean|null>(null)
 
-    useEffect(()=>{
-        if(!isEmpty(user?.id)){
-            setProfileLoading(true)
-            supabase.rpc("get_user", {id: user?.id}).then(({data, error})=>{
+    useEffect(()=>{ 
+
+        setProfileLoading(true)
+        supabase.auth.getSession().then(({data, error})=>{
+            if(isEmpty(data.session)){
+                setProfile(null)
                 setProfileLoading(false)
-                if(error){
-                    /**
-                     * @todo add error handling
-                     */
-                    console.log(error)
+            }else{
+                if(!isEmpty(user?.id)){
+                    supabase.rpc("get_user", {id: user?.id}).then(({data, error})=>{
+                        setProfileLoading(false)
+                        if(error){
+                            /**
+                             * @todo add error handling
+                             */
+                            console.log(error)
+                        }
+                        if(data){
+                            setProfile(data?.[0])
+                        }
+                    })
+                }else{
+                    setProfileLoading(false)
                 }
-                if(data){
-                    setProfile(data?.[0])
-                }
-            })
-        }else{
-            setProfileLoading(false)
-        }
+            }
+        })
+        
     }, [,user])
 
     return {

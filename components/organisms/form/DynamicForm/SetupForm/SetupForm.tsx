@@ -126,23 +126,23 @@ export function ChooseEntityType() {
                     value={currentFormType}
                     data={[
                         {
-                            value: "character",
-                            label: "Character",
+                            value: "characters",
+                            label: "Characters",
                             description: "Add a new character"
                         },
                         {
-                            value: "gadget",
-                            label: "Gadget",
+                            value: "gadgets",
+                            label: "Gadgets",
                             description: "Add gadget"
                         },
                         {
-                            value: "place",
-                            label: "Place",
+                            value: "places",
+                            label: "Places",
                             description: "Add a place, a planet, a galaxy that's significant e.g earth"
                         },
                         {
-                            value: "fight",
-                            label: "Fight",
+                            value: "fights",
+                            label: "Fights",
                             description: "Add a significant battle or fight"
                         },
                         {

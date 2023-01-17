@@ -19,7 +19,7 @@ export const generate_random_number = (min: number, max: number) => {
  */
 
 export const truncate_string = (str: string, length: number) => {
-    return str.length > length ? str.substring(0, length) + "..." : str;
+    return str?.length > length ? str?.substring(0, length) + "..." : str || "{empty}";
 }
 
 
@@ -46,5 +46,5 @@ export const truncate_string = (str: string, length: number) => {
 
 export const get_nested_object_value = (obj: any, path: string | string[], defaultValue?: any) => {
     const pathArray = Array.isArray(path) ? path : path.split(".");
-    return pathArray.reduce((obj, key) => (obj && obj[key] !== "undefined" ? obj[key] : defaultValue), obj);
+    return pathArray.reduce((obj, key) => (obj && obj?.[key] !== "undefined" ? obj?.[key] : defaultValue), obj);
 }

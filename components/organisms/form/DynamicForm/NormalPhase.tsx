@@ -2,7 +2,7 @@
 import { Button, Grid, Notification } from '@mantine/core'
 import { createSlice } from '@reduxjs/toolkit'
 import { IconCheck } from '@tabler/icons'
-import { isEmpty, uniq } from 'lodash'
+import { isEmpty, omit, uniq } from 'lodash'
 import React, { useEffect, useReducer, useState } from 'react'
 import { useEntityDescriptionForm } from '../../../../hooks/form/useEntityDescriptionForm'
 import { supabase } from '../../../../supabase/init.config'
@@ -44,7 +44,7 @@ function NormalPhase(props: IProps) {
 
   const { onDone } = props
 
-  const {load_current_form_queries_with_init_data : load_queries, updateResult,previous:  _previous, currentFormSchema, results, chosen_franchise, currentFormType, resetSchema} = useEntityDescriptionForm()
+  const {load_current_form_queries_with_init_data : load_queries, updateResult,previous:  _previous, currentFormSchema, results, chosen_franchise, currentFormType, resetSchema, currentFormState} = useEntityDescriptionForm()
 
 
   const previous = () => {
@@ -64,6 +64,8 @@ function NormalPhase(props: IProps) {
   }, [])
 
   const done = () => {
+
+
     setLoading(true)
     const required_queries = currentFormSchema?.queries?.map(({required, field})=>  required ? field : null)?.filter((v)=> v !== null)
     let empty_queries = required_queries?.filter((field)=> {
@@ -72,12 +74,13 @@ function NormalPhase(props: IProps) {
     !isEmpty(empty_queries) && set_empty_q(empty_queries as string[])
     
     if(!isEmpty(currentFormSchema)){
-      const { fn } = parse_query(currentFormSchema?.on_submit)
+      const { fn } = parse_query(currentFormState === "update" ? currentFormSchema?.on_update : currentFormSchema?.on_submit)
       const data = currentFormType === "franchise" ? results :   {
         ...results,
         franchise: chosen_franchise
       }
-      fn && supabase.rpc(fn, data).then(({data, error})=> {
+      let cleaned = currentFormState === "update" ? omit(data, ['created_on', 'updated_on', 'created_by']) : currentFormSchema?.on_submit
+      fn && supabase.rpc(fn, cleaned).then(({data, error})=> {
         if(error){
           setError(error)
         }else {
@@ -154,16 +157,16 @@ function NormalPhase(props: IProps) {
       }
       <Grid justify={"space-between"} w="100%" mt={"md"} px={10} align="center"  >
         <Grid.Col span={"content"} >
-          <Button onClick={previous} >
+          { currentFormState === "create" && <Button onClick={previous} >
             Previous
-          </Button>
+          </Button>}
         </Grid.Col>
         <Grid.Col span={"content"} >
           <Button 
           loading={loading}
             onClick={done}
           >
-            Done
+            { currentFormState === "update" ? "Update" : "Done"}
           </Button>
         </Grid.Col>
       </Grid>

@@ -1,4 +1,4 @@
-export type tFormType = "character" | "fight" | "place" | "franchise" | "gadget" | "species";
+export type tFormType = "characters" | "fights" | "places" | "franchise" | "gadgets" | "species";
 export type tFormQueryType = "image" | "text" | "description" | "list" | "time" | "number" | "boolean" | "select" | "multi-select" | "options" | "color";
 
 export interface IQueryInterface<T> {
@@ -16,7 +16,8 @@ export interface IQueryInterface<T> {
 }
 
 export interface IDynamicForm<T> {
-    entity: "character" | "fight" | "place" | "franchise" | "gadget" | "species",
+    entity: "characters" | "fights" | "places" | "franchise" | "gadgets" | "species",
     queries: Array<IQueryInterface<T>>,
-    on_submit: string
+    on_submit: string,
+    on_update: string,
 }

@@ -1,11 +1,11 @@
 import { Badge, Flex, Grid, Image, Loader, Notification, Table, Text } from '@mantine/core'
 import { IconX } from '@tabler/icons'
-import { isEmpty } from 'lodash'
+import { isEmpty, isUndefined } from 'lodash'
 import React, { useEffect } from 'react'
 import { IColumn, tTableColumnType } from '../../../../types/tables'
 
 import dayjs from "dayjs"
-import { truncate_string } from '../../../../utils/general-util-functions'
+import { get_nested_object_value, truncate_string } from '../../../../utils/general-util-functions'
 import { useTable } from '../../../../hooks/table/useTable'
 
 interface IProps {
@@ -62,21 +62,21 @@ function EntityTableRows ({
                                             <>
                                                 {
                                                     types?.[index] === "image" && <Image
-                                                        src={item?.[key]}
-                                                        alt={item?.[key]}
+                                                        src={get_nested_object_value(item, key, null)}
+                                                        alt={get_nested_object_value(item, key, null)}
                                                         width={50}
                                                         height={50}
                                                         
                                                     />
                                                 }
                                                 {
-                                                    types?.[index] === "text" && truncate_string(item?.[key], 20)
+                                                    types?.[index] === "text" && truncate_string(get_nested_object_value(item, key, null), 20)
                                                 }
                                                 {
-                                                    types?.[index] === "date" && dayjs(item?.[key]).format("DD/MM/YYYY")
+                                                    types?.[index] === "date" && dayjs(get_nested_object_value(item, key, null)).format("DD/MM/YYYY")
                                                 }
                                                 {
-                                                    types?.[index] === "description" && truncate_string(item?.[key], 20)
+                                                    types?.[index] === "description" && truncate_string(get_nested_object_value(item, key, null), 20)
                                                 }
                                                 {
                                                     types?.[index] === "color" && <Flex
@@ -90,13 +90,13 @@ function EntityTableRows ({
                                                 }
                                                 {
                                                     types?.[index] === 'badge' && <Badge>
-                                                        {item?.[key]}
+                                                        {get_nested_object_value(item, key, null)}
                                                     </Badge>
                                                 }
                                                 {
                                                     types?.[index] === 'badges' && <Flex align="center" justify={"center"} >
                                                         {
-                                                            item?.[key]?.split(",")?.map((badge: string, index: number)=>(
+                                                            get_nested_object_value(item, key, null)?.split(",")?.map((badge: string, index: number)=>(
                                                                 <Badge
                                                                     key={index}
                                                                 >
@@ -158,10 +158,10 @@ function EntityTable(props: IProps) {
                 striped
                 highlightOnHover
             >
-                <EntityTableHead headers={columns?.map((column)=>column?.label)} />
+                <EntityTableHead headers={columns?.filter(({hidden})=> isUndefined(hidden) || !hidden)?.map((column)=>column?.label)} />
                 <EntityTableRows 
                     types={columns?.map((column)=>column.type) as any} 
-                    keys={columns?.map((column)=>column?.key) as any} 
+                    keys={columns?.filter(({hidden})=> isUndefined(hidden) || hidden == false).map((column)=>column?.fetched_data_key) as any} 
                     data={data} 
                     onRowClick={onRowClick}
                 />

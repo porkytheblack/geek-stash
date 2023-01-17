@@ -2,7 +2,7 @@ import { parse_query } from './../../utils/dynamic-forms/form-utils';
 import { useState, useReducer } from 'react';
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
-import { nextPhase, prevPhase, selectCurrentPhaseIndex, selectCurrentFormSchema, setFranchise, selectChosenFranchise, setCurrentPhase, resetState } from './../../redux/entityDescriptionForm';
+import { nextPhase, prevPhase, selectCurrentPhaseIndex, selectCurrentFormSchema, setFranchise, selectChosenFranchise, setCurrentPhase, resetState, dynamic_form_state, selectCurrentFormState } from './../../redux/entityDescriptionForm';
 import { isUndefined, isEmpty, isNull } from 'lodash';
 import { placeForm, fightForm, franchiseForm, gadgetForm, speciesForm } from './../../utils/dynamic-forms/form-schemas';
 import { tFormType, IQueryInterface } from './../../types/forms';
@@ -35,18 +35,18 @@ export function useEntityDescriptionForm() {
      * @param type 
      * @description initialize form state
      */
-    const initFormState = (type: tFormType) => {
+    const initFormState = (type: tFormType, state?: dynamic_form_state) => {
         const chosen_schema = (()=>{
             switch(type){
-                case "character":
+                case "characters":
                     return characterForm
-                case "fight":
+                case "fights":
                     return fightForm
-                case "place":
+                case "places":
                     return placeForm
                 case "franchise": 
                     return franchiseForm
-                case "gadget":
+                case "gadgets":
                     return gadgetForm
                 case "species": 
                     return speciesForm
@@ -81,7 +81,8 @@ export function useEntityDescriptionForm() {
             type: chosen_schema?.entity,
             query_flow,
             query_results: results,
-            current_form_schema: chosen_schema
+            current_form_schema: chosen_schema,
+            form_state: state ? state : "create"
         }
 
         // dispatch action
@@ -213,6 +214,12 @@ export function useEntityDescriptionForm() {
         dispatchAction(resetState(isUndefined(r) ? null : r))
     }
 
+    /**
+     * @name currentFormState
+     * @description - the current form's state
+     */
+    const currentFormState = useAppSelector(selectCurrentFormState)
+
 
 
     return {
@@ -229,6 +236,7 @@ export function useEntityDescriptionForm() {
         getQueryValue,
         currentFormType,
         currentFormSchema,
-        resetSchema
+        resetSchema,
+        currentFormState
     }
 }

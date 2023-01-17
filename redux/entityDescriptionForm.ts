@@ -3,6 +3,8 @@ import { RootState } from './rootReducer';
 import { IDynamicForm } from './../types/forms';
 import { createSlice } from '@reduxjs/toolkit';
 
+export type dynamic_form_state = "create" | "update";
+
 interface IReducerState {
     type: string,
     query_flow: Array<{
@@ -15,6 +17,7 @@ interface IReducerState {
     current_form_schema: IDynamicForm<any> | null,
     current_phase_index: number,
     chosen_franchise: string,
+    form_state: dynamic_form_state
 }
 
 const initialState: IReducerState = {
@@ -23,7 +26,8 @@ const initialState: IReducerState = {
     query_results: null,
     current_form_schema: null,
     current_phase_index: -1,
-    chosen_franchise: ''
+    chosen_franchise: '',
+    form_state: "create"
 }
 
 
@@ -45,6 +49,7 @@ const entityDescriptionForm = createSlice({
             state.query_flow = action.payload.query_flow
             state.query_results = action.payload.query_results
             state.current_form_schema = action.payload.current_form_schema
+            state.form_state = action.payload.form_state ? action.payload.form_state : "create"
         },
         resetState: (state, action) => {
             state.type = action.payload?.back_one ? state.type : ""
@@ -53,6 +58,7 @@ const entityDescriptionForm = createSlice({
             state.current_form_schema = null
             state.current_phase_index = action.payload?.back_one ? 0 : -1
             state.chosen_franchise =  action.payload?.back_one ? state.chosen_franchise :''
+            state.form_state = "create"
         },
         updateField: (state, action) => {
             state.query_results = state.query_results ? {
@@ -86,3 +92,4 @@ export const selectQueryResults = (state: RootState) => state.entityDescriptionF
 export const selectCurrentPhaseIndex = (state: RootState) => state.entityDescriptionForm.current_phase_index
 export const selectCurrentFormSchema = (state: RootState) => state.entityDescriptionForm.current_form_schema
 export const selectChosenFranchise = (state: RootState) => state.entityDescriptionForm.chosen_franchise
+export const selectCurrentFormState = (state: RootState) => state.entityDescriptionForm.form_state

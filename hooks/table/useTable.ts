@@ -149,6 +149,26 @@ export function useTable(props: IProps) {
         }
     }
 
+    /**
+     * @name - publishItem
+     * @description - publish an item
+     * @param {string} id - the id of the item to publish
+     * 
+     */
+
+    const publishItem = async (id: string) => {
+        const is_it_public_already = tableData?.find((m)=>m.id === id)?.status === 'public'
+        try {
+            dispatchAction(setTableLoading(true))
+            const {data, error} = await supabase.from(tableSchema?.name as string).update({status: is_it_public_already ? 'private' : 'public'}).eq('id', id)
+            error && dispatchAction(setTableError(error))
+            fetchTableData()
+            dispatchAction(setTableLoading(false))
+        }catch (e) {
+            dispatchAction(setTableError(e))
+        }
+    }
+
 
 
 
@@ -159,6 +179,7 @@ export function useTable(props: IProps) {
         tableLoading,
         tableSchema,
         refetchTableData,
-        deleteRow
+        deleteRow,
+        publishItem
     }
 }

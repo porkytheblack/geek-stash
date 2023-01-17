@@ -52,6 +52,8 @@ export function useAuth() {
         current_provider
     }, dispatchAction] = useReducer(reducer, initialState)
 
+    const { push } = useRouter()
+
     /**
      * @name signInWithOauth
      * @description Signs in with google
@@ -110,10 +112,12 @@ export function useAuth() {
      * @name signOut
      * @description Signs out
      */
-    const signOut = () => {
-        supabase.auth.signOut().then(({error})=>{
-            console.log(error)
-        })
+    const signOut = async () => {
+        const { error } = await supabase.auth.signOut()
+            localStorage.clear()
+            sessionStorage.clear()
+            push("/")
+        
     }
 
     return {
