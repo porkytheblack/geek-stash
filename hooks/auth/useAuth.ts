@@ -82,7 +82,7 @@ export function useAuth() {
                 /**
                  * @todo - add redirect to dashboard
                  */
-                console.log("Redirecting::", user, "to dashboard")
+                // console.log("Redirecting::", user, "to dashboard")
             }
         }).catch((e)=>{
             setError(e)

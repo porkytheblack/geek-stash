@@ -155,10 +155,10 @@ export function useEntityDescriptionForm() {
             })
             try{
                 let res = _qs  ? await Promise.all(_qs) : []
-                console.log("res", res)
+                // console.log("res", res)
                 return res
             }catch (e){
-                console.log("error", e)
+                // console.log("error", e)
                 return []
             }
         

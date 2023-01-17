@@ -18,7 +18,7 @@ export function useStorage() {
             upsert: false
         })
         if (error) {
-            // console.log(error)
+            // // console.log(error)
             rej(error)
         }else { 
             if(!isEmpty(data)){ 

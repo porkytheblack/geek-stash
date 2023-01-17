@@ -10,7 +10,7 @@ function View() {
   const [current_schema, set_current_schema] = useState<keyof typeof tableSchemas | null>(null)
 
   useEffect(()=>{
-    console.log("The current schema is::", current_schema)
+    // console.log("The current schema is::", current_schema)
   }, [current_schema])
 
   return (

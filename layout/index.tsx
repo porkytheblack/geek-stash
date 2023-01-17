@@ -34,7 +34,7 @@ useEffect(()=>{
     })
     return ()=>{
         events.off("routeChangeStart", (path)=>{
-            console.log("Path unmounted: :", path)
+            // console.log("Path unmounted: :", path)
             setLoading(true)
         })
     }
@@ -43,7 +43,7 @@ useEffect(()=>{
 
 
 const onProceed = ( access_state: string ) => {
-    console.log("Proceeding  path::", pathname)
+    // console.log("Proceeding  path::", pathname)
     if(isEmpty(access_state)) return;
 
     switch (access_state) {
@@ -53,7 +53,7 @@ const onProceed = ( access_state: string ) => {
             break;
         case "unauthorized":
             set_layout("main")
-            console.log("unauthorized")
+            // console.log("unauthorized")
             push("/").then(()=>{
                 setLoading(false)
             })

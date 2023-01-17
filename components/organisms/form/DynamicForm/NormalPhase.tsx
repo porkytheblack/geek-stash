@@ -84,7 +84,7 @@ function NormalPhase(props: IProps) {
         if(error){
           setError(error)
         }else {
-          console.log(data)
+          // console.log(data)
           setLoading(false)
           setError(null)
           onDone && onDone()
@@ -105,7 +105,7 @@ function NormalPhase(props: IProps) {
   }
 
   useEffect(()=>{
-    console.log("Error::", error)
+    // console.log("Error::", error)
   }, [error])
 
 

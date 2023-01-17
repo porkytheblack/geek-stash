@@ -28,7 +28,7 @@ export function useAuthState () {
                             /**
                              * @todo add error handling
                              */
-                            console.log(error)
+                            // console.log(error)
                         }
                         if(data){
                             setProfile(data?.[0])
