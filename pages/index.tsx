@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
-import { Button, Center, Container, Flex, Grid, Text } from '@mantine/core'
+import { Button, Center, Container, Flex, Grid, Text, Tooltip } from '@mantine/core'
 import { IconBrandGit, IconBrandGithub, IconBrandGoogle } from '@tabler/icons'
 import { useAuth } from '../hooks/auth/useAuth'
 import { useEffect } from 'react'
@@ -77,19 +77,25 @@ export default function Home() {
             >
               Continue with
             </Text>
-            <Button
-              mb="md"
-              w="80%"
-              onClick={signInWithGoogle}
-              leftIcon={
-                <IconBrandGoogle/>
-              }
-              loading={
-                loading && current_provider === "google"
-              }
+            <Tooltip
+              label="Waiting on google verification"
             >
-              Google
-            </Button>
+              <Button
+                mb="md"
+                w="80%"
+                onClick={signInWithGoogle}
+                leftIcon={
+                  <IconBrandGoogle/>
+                }
+                loading={
+                  loading && current_provider === "google"
+                }
+                disabled
+              >
+                Google
+              </Button>
+            </Tooltip>
+            
             <Button
               onClick={signInWithGithub}
               leftIcon={

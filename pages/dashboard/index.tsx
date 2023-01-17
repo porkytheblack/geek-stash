@@ -40,7 +40,7 @@ function Dashboard(props: any){
                                 colorScheme === "dark" ? "gray" : "dark"
                             }
                         >
-                            Use your api key to authenticate your api requests to the repository.
+                            Use your api key to authenticate your api requests to geek-stash.
                         </Text>
                         <Flex w="100%" align="center" justify={"space-between"} >
                             <Button

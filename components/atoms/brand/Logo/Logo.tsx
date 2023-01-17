@@ -20,7 +20,7 @@ function Logo() {
           fw={700}
           color="blue"
         >
-          The-repository
+          Geek Stash
         </Text>
     </Flex>
     
