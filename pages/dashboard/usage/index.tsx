@@ -1,9 +1,16 @@
+import { Text } from '@mantine/core'
 import React from 'react'
 import { IPageProps } from '../../../types/next-related-extensions'
 
 function Usage() {
   return (
-    <div>Usage</div>
+    <div>
+      <Text
+        color={"red"}
+      >
+        Still under development ⚠️
+      </Text>
+    </div>
   )
 }
 

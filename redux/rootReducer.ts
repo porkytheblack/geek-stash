@@ -1,3 +1,4 @@
+import { ApiKeysApi } from './data/apiKeys';
 import { franchiseApi } from './data/franchiseApi';
 import { combineReducers } from "@reduxjs/toolkit";
 import entityDescriptionForm from "./entityDescriptionForm";
@@ -7,7 +8,8 @@ import layoutSlice from "./layoutSlice";
 const combinedReducers = combineReducers({
     layoutReducer: layoutSlice,
     entityDescriptionForm: entityDescriptionForm,
-    [franchiseApi.reducerPath]: franchiseApi.reducer
+    [franchiseApi.reducerPath]: franchiseApi.reducer,
+    [ApiKeysApi.reducerPath]: ApiKeysApi.reducer
 })
 
 export default combinedReducers;
