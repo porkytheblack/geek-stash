@@ -1,3 +1,4 @@
+import { ApiKeysApi } from './data/apiKeys';
 import { franchiseApi } from './data/franchiseApi';
 import { TypedUseSelectorHook } from './../node_modules/react-redux/es/types.d';
 import { configureStore, Dispatch } from "@reduxjs/toolkit"
@@ -9,6 +10,7 @@ const store = configureStore({
     reducer: combinedReducers,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(franchiseApi.middleware)
+    .concat(ApiKeysApi.middleware)
 })
 
 export default store

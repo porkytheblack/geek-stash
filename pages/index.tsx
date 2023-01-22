@@ -90,7 +90,9 @@ export default function Home() {
                 loading={
                   loading && current_provider === "google"
                 }
-                disabled
+                disabled={
+                  process.env.NODE_ENV === "development" ? false : true
+                }
               >
                 Google
               </Button>

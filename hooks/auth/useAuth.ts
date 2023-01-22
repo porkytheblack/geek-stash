@@ -60,10 +60,17 @@ export function useAuth() {
      */
 
     const signInWithOauth = ( provider: "google" | "github" ) => {
+
+        supabase.auth.getSession().then(({data})=>{
+            data.session?.access_token
+        })
         supabase.auth.getUser().then(({data: {user}})=>{
             if(isEmpty(user)){
                 supabase.auth.signInWithOAuth({
                     provider: provider,
+                    options: {
+                        redirectTo: process.env.NODE_ENV === "development" ? "http://localhost:3000" : undefined
+                    }
                 }).then(({data, error})=>{
                     if(!isEmpty(error)){
 

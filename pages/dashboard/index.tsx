@@ -1,13 +1,49 @@
-import { Button, Flex, Grid, Tabs, Text, useMantineColorScheme } from "@mantine/core"
+import { Button, Flex, Grid, Tabs, Text, Tooltip, useMantineColorScheme } from "@mantine/core"
 import { useEffect } from "react"
 import { IPageProps } from "../../types/next-related-extensions"
 import { Prism } from "@mantine/prism"
 import { IconBrandPython, IconBrandTypescript, IconKey, IconTrash } from "@tabler/icons"
+import { useGetApiKeysQuery } from "../../redux/data/apiKeys"
+import useKeys from "../../hooks/auth/useKeys"
+import { useAuthState } from "../../hooks/auth/useAuthState"
+import { isEmpty } from "lodash"
+
+const tsCodeSnippet = `
+import axios from "axios"
+
+axios.get('https://geek-stash.doncodes.xyz/api/data/get?type=character&id=someid', {
+  headers: {
+      "Authorization": "Bearer {{your api key goes here}}"
+  }
+})
+`
+
+const pyCodeSnippet = `
+import requests
+
+url = "https://geek-stash.doncodes.xyz/api/data/get?type=character&id=someid"
+
+payload={}
+
+headers = {
+    Authorization: "Bearer {{your api key goes here}}"
+}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+print(response.text)
+`
 
 
 function Dashboard(props: any){
 
+    const { apiKey, apiKeys, apiKeysError, apiKeysLoading, generate_new_api_key } = useKeys()
+
     const {colorScheme} = useMantineColorScheme()
+
+    useEffect(()=>{
+        console.log("apiKeys::", apiKeys)
+    }, [apiKeys])
     
     return (
         <Flex
@@ -23,11 +59,13 @@ function Dashboard(props: any){
                             API Key
                         </Text>
                         <Prism
-                            language="yaml"
-                            w="full"
+                            w={700}
+                            language="typescript"
                             colorScheme={ colorScheme === "dark" ? "light" : "dark"}
                         >
-                            y8skshsijsmslsjjs8djsjs88hhIBKHB*8hs99fdbdjjsjskskksldmdmdmdkdmddjdjdjdjdjfjdjdjdjd
+                            {
+                                isEmpty(apiKey) ? "Click generate to get a new one" : apiKey?.api_key
+                            }
                         </Prism>
                         <Text 
                             w="full"
@@ -50,21 +88,27 @@ function Dashboard(props: any){
                                         color="white"
                                     />
                                 }
+                                onClick={generate_new_api_key}
                             >
                                 Generate New Key
                             </Button>
-
-                            <Button
-                                leftIcon={
-                                    <IconTrash
-                                        size={20}
-                                        color="white"
-                                    />
-                                }
-                                type="reset"
-                            >
-                                Delete Key
-                            </Button>
+                            <Tooltip
+                                label="Coming soon!"
+                            >   
+                                <Button
+                                        leftIcon={
+                                            <IconTrash
+                                                size={20}
+                                                color="white"
+                                            />
+                                        }
+                                        type="reset"
+                                        disabled
+                                    >
+                                        Delete Key
+                                    </Button>
+                            </Tooltip>
+                            
                         </Flex>
                     </Flex>
                         
@@ -87,14 +131,18 @@ function Dashboard(props: any){
                             value="typescript"
                             w="full"
                         >
-                            Some Typescript code
+                            {
+                                tsCodeSnippet
+                            }
                         </Prism.Panel>
                         <Prism.Panel
                             language="python"
                             value="python"
                             w="full"
                         >
-                            Some Python code
+                            {
+                                pyCodeSnippet
+                            }
                         </Prism.Panel>
                     </Prism.Tabs>
                 </Flex>
