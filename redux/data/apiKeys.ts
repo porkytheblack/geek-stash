@@ -17,13 +17,15 @@ export const ApiKeysApi = createApi({
             query: (uid)=> ({
                 url: "get_active_api_keys",
                 method: "POST",
+                /**
+                 * @todo - move this from parameters back to the prepare headers function, and get the token from the current user session
+                 */
                 body: {
                     "_status": "active",
                     "_owner": uid
                 }
             }),
             transformResponse: (response: any) => {
-                console.log("apiKeysApi.getApiKeys.transformResponse", response)
                 return response
             }
         })

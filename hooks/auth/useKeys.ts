@@ -12,11 +12,6 @@ function useKeys () {
         skip: isEmpty(profile)
     })
 
-
-    useEffect(()=>{
-        console.log("FETCHED KEYS::",data)
-    }, [,data, isLoading, isError])
-
     /**
      * @name generate_new_api_key
      * @description Generate a new API key

@@ -4,6 +4,7 @@ import { TypedUseSelectorHook } from './../node_modules/react-redux/es/types.d';
 import { configureStore, Dispatch } from "@reduxjs/toolkit"
 import combinedReducers, { RootState } from "./rootReducer"
 import { useDispatch, useSelector } from "react-redux"
+import usageApi from './data/usageApi';
 
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(franchiseApi.middleware)
     .concat(ApiKeysApi.middleware)
+    .concat(usageApi.middleware)
 })
 
 export default store

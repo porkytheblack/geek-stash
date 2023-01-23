@@ -1,8 +1,13 @@
 import { Text } from '@mantine/core'
-import React from 'react'
+import React, { useEffect } from 'react'
+import UsageChart from '../../../components/organisms/charts/UsageChart'
+import { useGetUsageDataQuery } from '../../../redux/data/usageApi'
 import { IPageProps } from '../../../types/next-related-extensions'
 
 function Usage() {
+
+  
+
   return (
     <div>
       <Text
@@ -10,6 +15,7 @@ function Usage() {
       >
         Still under development ⚠️
       </Text>
+      <UsageChart/>
     </div>
   )
 }
