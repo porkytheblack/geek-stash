@@ -40,10 +40,6 @@ function Dashboard(props: any){
     const { apiKey, apiKeys, apiKeysError, apiKeysLoading, generate_new_api_key } = useKeys()
 
     const {colorScheme} = useMantineColorScheme()
-
-    useEffect(()=>{
-        console.log("apiKeys::", apiKeys)
-    }, [apiKeys])
     
     return (
         <Flex
